@@ -11,12 +11,11 @@ if (isset($_POST["pinjam"])) {
     if ($jumlah_buku > 3) {
         $_SESSION['message'] = "Maksimal 3 buku";
         header("Location: ../index.php");
-        exit();
+        exit;
     }
 
     // Lakukan transaksi peminjaman
-    $sql_transaksi = "INSERT INTO transaksi (kode_transaksi, kode_anggota, kode_petugas, tanggal_pinjam) 
-                      VALUES (nextval('kode_transaksi'), '$peminjam', '$petugas', '$start') RETURNING kode_transaksi";
+    $sql_transaksi = "INSERT INTO transaksi (kode_transaksi, kode_anggota, kode_petugas, tanggal_pinjam) VALUES (nextval('kode_transaksi'), '$peminjam', '$petugas', '$start') RETURNING kode_transaksi";
     $query_transaksi = pg_query($db, $sql_transaksi);
 
     if ($query_transaksi) {
@@ -36,8 +35,7 @@ if (isset($_POST["pinjam"])) {
             }
 
             // Masukkan data peminjaman buku ke tabel "Detail_Transaksi"
-            $sql_detail = "INSERT INTO detail_transaksi (kode_detail_transaksi, kode_transaksi, kode_buku) 
-                           VALUES (nextval('kode_detail_transaksi'), '$kode_transaksi', '$kode_buku')";
+            $sql_detail = "INSERT INTO detail_transaksi (kode_detail_transaksi, kode_transaksi, kode_buku) VALUES (nextval('kode_detail_transaksi'), '$kode_transaksi', '$kode_buku')";
             pg_query($db, $sql_detail);
         }
 
@@ -49,4 +47,3 @@ if (isset($_POST["pinjam"])) {
 } else {
     die("Akses dilarang...");
 }
-?>
